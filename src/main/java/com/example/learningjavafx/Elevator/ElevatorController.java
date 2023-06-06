@@ -1,5 +1,6 @@
 package com.example.learningjavafx.Elevator;
 
+import com.example.learningjavafx.Components.Door;
 import com.example.learningjavafx.Enumerations.ElevatorDirection;
 import com.example.learningjavafx.Helpers.Console;
 
@@ -76,6 +77,8 @@ public class ElevatorController {
      */
     private HashSet<Integer> userInputRequest;
 
+    private Door door;
+
 
 
     /**
@@ -130,6 +133,8 @@ public class ElevatorController {
         this.elevatorDirection = ElevatorDirection.IDLE;
         this.locked = false;
         this.userInputRequest = new HashSet<>();
+
+        this.door = new Door();
     }
 
 
@@ -240,6 +245,14 @@ public class ElevatorController {
 
 
 
+    }
+
+    /**
+     * Call it before the processNextREquest > move because it will poll the request
+     * @return
+     */
+    public boolean isFloorReached() {
+        return this.currentFloor == this.currentQueue.peek();
     }
 
     /**
@@ -381,6 +394,7 @@ public class ElevatorController {
     public PriorityQueue<Integer> getCurrentQueue() {return this.currentQueue;}
     public PriorityQueue<Integer> getUpQueue() {return this.upQueue;}
     public PriorityQueue<Integer> getDownQueue() {return this.downQueue;}
+    public Door getDoor() {return this.door;}
 
 
 

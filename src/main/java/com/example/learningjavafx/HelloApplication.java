@@ -81,17 +81,23 @@ public class HelloApplication extends Application {
                 // we will have an input field
                 // we will show the input field
                 // on enter: call internalRequest from the elevator
+
                 TextField internalInput = (TextField) scene.lookup("#internal"+j);
                 internalInput.setDisable(false);
-                internalInput.textProperty().addListener((observableValue, oldValue, newValue) -> {
-                    elevator.internalRequest(Integer.parseInt(newValue));
-                    internalInput.setText("");
-                    internalInput.setDisable(true);
-                });
-
-
             }
         }
+    }
+
+    private void handleInternalFloorInput(int index) {
+        ElevatorController elevator = RunnableBuilding.building.elevators.get(index);
+        TextField internalInput = (TextField) scene.lookup("#internal"+index);
+        internalInput.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            try {
+                elevator.internalRequest(Integer.parseInt(newValue));
+            } catch(Exception err) {}
+            internalInput.setText("");
+            internalInput.setDisable(true);
+        });
     }
 
     private void updateElevatorQueueStatus() {
@@ -123,6 +129,7 @@ public class HelloApplication extends Application {
         }
     }
     private void update() {
+        // NOTE: call is floor reached before calling move
         // Elevator 1
         this.updateElevatorQueueStatus();
         this.updateElevatorsState();
@@ -208,6 +215,9 @@ public class HelloApplication extends Application {
 
     private void setup() {
         this.update();
+        this.handleInternalFloorInput(0);
+        this.handleInternalFloorInput(1);
+        this.handleInternalFloorInput(2);
         this.handleUpCalls();
         this.handleDownCalls();
         this.handleLock();
