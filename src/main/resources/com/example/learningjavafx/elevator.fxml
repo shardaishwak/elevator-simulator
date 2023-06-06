@@ -34,6 +34,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -42,9 +44,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.learningjavafx.HelloController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="com.example.learningjavafx.HelloController">
   <children>
-    <AnchorPane maxHeight="400" maxWidth="400" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="433.0" maxWidth="648.0" prefHeight="433.0" prefWidth="648.0" VBox.vgrow="ALWAYS">
       <children>
             <GridPane layoutX="221.0" layoutY="92.0" prefHeight="267.0" prefWidth="200.0">
               <columnConstraints>
@@ -63,134 +65,167 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Rectangle fx:id="e07" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" />
-                  <Rectangle fx:id="e06" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Rectangle fx:id="e03" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="53.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Rectangle fx:id="e04" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="98.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Rectangle fx:id="e05" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="53.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Rectangle fx:id="e00" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="186.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-                  <Rectangle fx:id="e17" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Rectangle fx:id="e16" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Rectangle fx:id="e15" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="53.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Rectangle fx:id="e14" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="98.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Rectangle fx:id="e13" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="142.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Rectangle fx:id="e10" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="186.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-                  <Rectangle fx:id="e27" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="230.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                  <Rectangle fx:id="e26" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="143.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Rectangle fx:id="e25" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="143.0" layoutY="53.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Rectangle fx:id="e24" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="143.0" layoutY="98.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Rectangle fx:id="e23" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="143.0" layoutY="142.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Rectangle fx:id="e20" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="143.0" layoutY="186.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-                  <Rectangle fx:id="e02" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="147.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Rectangle fx:id="e01" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="180.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                  <Rectangle fx:id="e12" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="213.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Rectangle fx:id="e11" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="180.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                  <Rectangle fx:id="e22" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="76.0" layoutY="213.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <Rectangle fx:id="e21" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="143.0" layoutY="180.0" stroke="BLACK" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <Rectangle fx:id="e07" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" />
+                  <Rectangle fx:id="e06" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="8.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Rectangle fx:id="e03" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="53.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Rectangle fx:id="e04" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="98.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Rectangle fx:id="e05" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="53.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Rectangle fx:id="e00" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="186.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+                  <Rectangle fx:id="e17" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="8.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Rectangle fx:id="e16" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="8.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Rectangle fx:id="e15" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="53.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Rectangle fx:id="e14" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="98.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Rectangle fx:id="e13" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="142.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Rectangle fx:id="e10" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="186.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+                  <Rectangle fx:id="e27" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="230.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <Rectangle fx:id="e26" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="8.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Rectangle fx:id="e25" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="53.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Rectangle fx:id="e24" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="98.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                  <Rectangle fx:id="e23" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="142.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                  <Rectangle fx:id="e20" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="186.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+                  <Rectangle fx:id="e02" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="147.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Rectangle fx:id="e01" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="180.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <Rectangle fx:id="e12" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="10.0" layoutY="213.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Rectangle fx:id="e11" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="180.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <Rectangle fx:id="e22" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="76.0" layoutY="213.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                  <Rectangle fx:id="e21" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="180.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                </children>
             </GridPane>
-            <Button fx:id="lock0" layoutX="234.0" layoutY="450.0" mnemonicParsing="false" text="LOCK">
+            <Button fx:id="lock0" layoutX="231.0" layoutY="45.0" mnemonicParsing="false" text="ALARM">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button fx:id="callup7" layoutX="149.0" layoutY="101.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup7" layoutX="129.0" layoutY="101.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="lock1" layoutX="299.0" layoutY="450.0" mnemonicParsing="false" text="LOCK">
+            <Button fx:id="lock1" layoutX="297.0" layoutY="44.0" mnemonicParsing="false" text="ALARM">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button fx:id="lock2" layoutX="367.0" layoutY="450.0" mnemonicParsing="false" text="LOCK">
+            <Button fx:id="lock2" layoutX="365.0" layoutY="44.0" mnemonicParsing="false" text="ALARM">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Label layoutX="253.0" layoutY="58.0" text="ELEVATOR SIMULATOR" />
+            <Label layoutX="252.0" layoutY="3.0" text="ELEVATOR SIMULATOR" />
             <Label layoutX="489.0" layoutY="90.0" text="FIREMAN CONTROLS" />
-            <Button layoutX="496.0" layoutY="123.0" mnemonicParsing="false" text="GROUND LOCK" fx:id="groundLock" />
-            <Button layoutX="510.0" layoutY="155.0" mnemonicParsing="false" text="FIRE LOCK" fx:id="fireLock" />
-            <Label fx:id="state0" layoutX="236.0" layoutY="358.0" text="Status" />
-            <Label fx:id="state1" layoutX="302.0" layoutY="358.0" text="Status" />
-            <Label fx:id="state2" layoutX="370.0" layoutY="358.0" text="Status" />
-            <Button fx:id="calldown7" layoutX="181.0" layoutY="101.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="groundLock" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="GROUND LOCK">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            <Button fx:id="fireLock" defaultButton="true" layoutX="516.0" layoutY="193.0" mnemonicParsing="false" text="FIRE LOCK">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            <Label fx:id="state0" layoutX="240.0" layoutY="363.0" text="Status">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <Label fx:id="state1" layoutX="307.0" layoutY="363.0" text="Status">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <Label fx:id="state2" layoutX="375.0" layoutY="363.0" text="Status">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <Button fx:id="calldown7" layoutX="161.0" layoutY="101.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup6" layoutX="149.0" layoutY="135.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup6" layoutX="129.0" layoutY="135.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown6" layoutX="181.0" layoutY="135.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown6" layoutX="161.0" layoutY="135.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup5" layoutX="149.0" layoutY="169.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup5" layoutX="129.0" layoutY="169.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown5" layoutX="181.0" layoutY="169.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown5" layoutX="161.0" layoutY="169.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup4" layoutX="149.0" layoutY="203.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup4" layoutX="129.0" layoutY="203.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown4" layoutX="181.0" layoutY="203.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown4" layoutX="161.0" layoutY="203.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup3" layoutX="149.0" layoutY="236.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup3" layoutX="129.0" layoutY="236.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown3" layoutX="181.0" layoutY="236.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown3" layoutX="161.0" layoutY="236.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup2" layoutX="149.0" layoutY="269.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup2" layoutX="129.0" layoutY="269.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown2" layoutX="181.0" layoutY="269.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown2" layoutX="161.0" layoutY="269.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup1" layoutX="149.0" layoutY="302.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup1" layoutX="129.0" layoutY="302.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown1" layoutX="181.0" layoutY="302.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown1" layoutX="161.0" layoutY="302.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="callup0" layoutX="149.0" layoutY="337.0" mnemonicParsing="false" text="UP">
+            <Button fx:id="callup0" layoutX="129.0" layoutY="337.0" mnemonicParsing="false" text="UP">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="calldown0" layoutX="181.0" layoutY="337.0" mnemonicParsing="false" text="DOWN">
+            <Button fx:id="calldown0" layoutX="161.0" layoutY="337.0" mnemonicParsing="false" text="DOWN">
                <font>
                   <Font size="9.0" />
                </font>
             </Button>
+            <TextField fx:id="internal0" disable="true" layoutX="239.0" layoutY="407.0" prefHeight="26.0" prefWidth="30.0" />
+            <Label layoutX="161.0" layoutY="412.0" text="Enter floor" />
+            <TextField fx:id="internal1" disable="true" layoutX="305.0" layoutY="407.0" prefHeight="26.0" prefWidth="30.0" />
+            <TextField fx:id="internal2" disable="true" layoutX="373.0" layoutY="408.0" prefHeight="26.0" prefWidth="30.0" />
+            <PasswordField fx:id="firemanpassword" layoutX="470.0" layoutY="116.0" promptText="Enter fireman password" />
+            <Button fx:id="firemanexit" layoutX="529.0" layoutY="226.0" mnemonicParsing="false" text="EXIT">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Rectangle fx:id="called6" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="138.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called7" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="100.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called5" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="172.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called4" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="205.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called3" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="240.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="272.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="305.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Rectangle fx:id="called0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="340.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
       </children>
     </AnchorPane>
   </children>

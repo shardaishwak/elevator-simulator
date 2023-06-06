@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -68,14 +70,25 @@ public class HelloApplication extends Application {
                 } else if (elevator.isFireLock()) {
                     floorTime.setFill(Color.rgb(255,0,0));
                 } */else if (elevator.isLocked()) {
-                    floorTime.setFill(Color.rgb(105,0,0));
+                    floorTime.setFill(Color.rgb (105,0,0));
                 }  else {
                     floorTime.setFill(Color.rgb(255,255,255));
                 }
             }
 
             if (elevator.hasToWaitUserInput()) {
-                System.out.println("Show the user the options for floors keypad");
+                //System.out.println("Show the user the options for floors keypad");
+                // we will have an input field
+                // we will show the input field
+                // on enter: call internalRequest from the elevator
+                TextField internalInput = (TextField) scene.lookup("#internal"+j);
+                internalInput.setDisable(false);
+                internalInput.textProperty().addListener((observableValue, oldValue, newValue) -> {
+                    elevator.internalRequest(Integer.parseInt(newValue));
+                    internalInput.setText("");
+                    internalInput.setDisable(true);
+                });
+
 
             }
         }
@@ -88,10 +101,33 @@ public class HelloApplication extends Application {
             label.setText(controller.getCurrentQueue().toString()+"\n"+controller.getUpQueue()+"\n"+controller.getDownQueue());
         }
     }
+
+    /**
+     * these are the small square items of 12px to indicate if the floor elevator has been called or not.
+     */
+    private void updateCalledSigns() {
+        ((Rectangle) scene.lookup("#called1")).setFill(Color.rgb(0, 255, 0));
+        for (int i = 0; i < RunnableBuilding.floors; i++) {
+            Rectangle calledContainer = (Rectangle) scene.lookup("#called"+i);
+            for (int j = 0; j < RunnableBuilding.elevators; j++) {
+                ElevatorController controller = RunnableBuilding.building.elevators.get(j);
+
+                if (controller.getUpQueue().contains(i) || controller.getDownQueue().contains(i)) {
+                    calledContainer.setFill(Color.rgb(0, 255, 0));
+                    break;
+                } else {
+                    calledContainer.setFill(Color.rgb(255, 255, 255));
+                }
+            }
+
+        }
+    }
     private void update() {
         // Elevator 1
-        updateElevatorQueueStatus();
-        updateElevatorsState();
+        this.updateElevatorQueueStatus();
+        this.updateElevatorsState();
+        this.updateCalledSigns();
+
         RunnableBuilding.building.scheduler.run();
     }
 
