@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
@@ -92,8 +93,14 @@ public class HelloApplication extends Application {
         ElevatorController elevator = RunnableBuilding.building.elevators.get(index);
         TextField internalInput = (TextField) scene.lookup("#internal"+index);
         internalInput.textProperty().addListener((observableValue, oldValue, newValue) -> {
+
             try {
-                elevator.internalRequest(Integer.parseInt(newValue));
+                Integer value = Integer.parseInt(newValue);
+                if (value < 0 || value > RunnableBuilding.floors) {
+                    System.out.println("INVALID INPUT");
+                } else {
+                    elevator.internalRequest(value);
+                }
             } catch(Exception err) {}
             internalInput.setText("");
             internalInput.setDisable(true);
@@ -175,20 +182,21 @@ public class HelloApplication extends Application {
     public void handleLock() {
         for (int i = 0; i < RunnableBuilding.elevators; i++) {
             Button button = (Button) scene.lookup("#lock"+i);
-
-            int finalI = i;
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    ElevatorController elevatorController = RunnableBuilding.building.elevators.get(finalI);
-                    boolean locked = elevatorController.isLocked();
+                    boolean locked = RunnableBuilding.building.scheduler.isGroundLocked();
+                    Button groundButton = (Button) scene.lookup("#groundLock");
+
                     if (locked) {
                         // we have to unlock it
-                        elevatorController.unlock();
-                        button.setText("LOCK");
+                        RunnableBuilding.building.scheduler.disableGroundLock();
+                        groundButton.setText("GROUND LOCK");
+                        button.setText("ALARM");
                     } else {
-                        elevatorController.lock();
-                        button.setText("UNLOCK");
+                        RunnableBuilding.building.scheduler.enableGroundLock();
+                        groundButton.setText("GROUND UNLOCK");
+                        button.setText("DIS ALARM");
                     }
                 }
             });
@@ -211,6 +219,49 @@ public class HelloApplication extends Application {
         });
     }
 
+    // ID: firemanexit
+    // ID: firemanpassword
+    private void handleAccessFiremanPanel() {
+        Button firemanEnter = (Button) scene.lookup("#firemanEnter");
+        firemanEnter.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String passwordValue = ((PasswordField) scene.lookup("#firemanpassword")).getText();
+                if (passwordValue.equals("secret")) {
+                    Button groundLock = (Button) scene.lookup("#groundLock");
+                    Button fireLock = (Button) scene.lookup("#fireLock");
+                    Button exit = (Button) scene.lookup("#firemanexit");
+
+                    groundLock.setVisible(true);
+                    fireLock.setVisible(true);
+                    exit.setVisible(true);
+                    firemanEnter.setVisible(false);
+                } else {
+                    System.out.println("ERROR: WRONG PASSWORD.");
+                }
+            }
+        });
+    }
+
+    public void handleExitFiremanPanel() {
+        Button button = (Button) scene.lookup("#firemanexit");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Button groundLock = (Button) scene.lookup("#groundLock");
+                Button fireLock = (Button) scene.lookup("#fireLock");
+                Button exit = (Button) scene.lookup("#firemanexit");
+                Button firemanEnter = (Button) scene.lookup("#firemanEnter");
+
+                groundLock.setVisible(false);
+                fireLock.setVisible(false);
+                exit.setVisible(false);
+                firemanEnter.setVisible(true);
+
+            }
+        });
+    }
+
 
 
     private void setup() {
@@ -222,6 +273,8 @@ public class HelloApplication extends Application {
         this.handleDownCalls();
         this.handleLock();
         this.handleGroundLock();
+        this.handleAccessFiremanPanel();
+        this.handleExitFiremanPanel();
     }
 
     public static void main(String[] args) {

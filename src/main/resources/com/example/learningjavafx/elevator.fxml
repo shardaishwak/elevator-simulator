@@ -113,11 +113,15 @@
             </Button>
             <Label layoutX="252.0" layoutY="3.0" text="ELEVATOR SIMULATOR" />
             <Label layoutX="489.0" layoutY="90.0" text="FIREMAN CONTROLS" />
-            <Button fx:id="groundLock" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="GROUND LOCK">
+            <Button visible="false" fx:id="groundLock" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="GROUND LOCK">
                <font>
                   <Font size="10.0" />
                </font></Button>
-            <Button fx:id="fireLock" defaultButton="true" layoutX="516.0" layoutY="193.0" mnemonicParsing="false" text="FIRE LOCK">
+            <Button fx:id="firemanEnter" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="Enter panel">
+              <font>
+                  <Font size="10.0" />
+              </font></Button>
+            <Button visible="false" fx:id="fireLock" defaultButton="true" layoutX="516.0" layoutY="193.0" mnemonicParsing="false" text="FIRE LOCK">
                <font>
                   <Font size="10.0" />
                </font></Button>
@@ -213,7 +217,7 @@
             <TextField fx:id="internal1" disable="true" layoutX="305.0" layoutY="407.0" prefHeight="26.0" prefWidth="30.0" />
             <TextField fx:id="internal2" disable="true" layoutX="373.0" layoutY="408.0" prefHeight="26.0" prefWidth="30.0" />
             <PasswordField fx:id="firemanpassword" layoutX="470.0" layoutY="116.0" promptText="Enter fireman password" />
-            <Button fx:id="firemanexit" layoutX="529.0" layoutY="226.0" mnemonicParsing="false" text="EXIT">
+            <Button visible="false" fx:id="firemanexit" layoutX="529.0" layoutY="226.0" mnemonicParsing="false" text="EXIT">
                <font>
                   <Font size="10.0" />
                </font>
