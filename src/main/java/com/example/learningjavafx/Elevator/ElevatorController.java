@@ -434,10 +434,9 @@ public class ElevatorController {
      */
     public void enableFireLock() {
         this.clearAllRequests();
-        this.addRequest(8);
 
         // Until it has not reached the floor
-        while(!isIDLEMode()) this.move();
+        this.setElevatorFloor(7);
         // Lock the elevator
         this.lock();
         this.fireLock = true;
@@ -459,9 +458,9 @@ public class ElevatorController {
      */
     public void enableGroundLock() {
         this.clearAllRequests();
-        this.addRequest(0);
+        //this.addRequest(0);
 
-        while(!isIDLEMode()) this.move();
+        this.setElevatorFloor(0);
 
         this.lock();
         this.groundLock = true;

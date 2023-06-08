@@ -3,6 +3,7 @@ package com.example.learningjavafx;
 import com.example.learningjavafx.Components.Elevator;
 import com.example.learningjavafx.Elevator.ElevatorController;
 import com.example.learningjavafx.Enumerations.ElevatorDirection;
+import com.example.learningjavafx.Helpers.Console;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -15,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 
 public class HelloApplication extends Application {
     private Scene scene;
-    private Integer counter = 0;
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -89,23 +90,7 @@ public class HelloApplication extends Application {
         }
     }
 
-    private void handleInternalFloorInput(int index) {
-        ElevatorController elevator = RunnableBuilding.building.elevators.get(index);
-        TextField internalInput = (TextField) scene.lookup("#internal"+index);
-        internalInput.textProperty().addListener((observableValue, oldValue, newValue) -> {
 
-            try {
-                Integer value = Integer.parseInt(newValue);
-                if (value < 0 || value > RunnableBuilding.floors) {
-                    System.out.println("INVALID INPUT");
-                } else {
-                    elevator.internalRequest(value);
-                }
-            } catch(Exception err) {}
-            internalInput.setText("");
-            internalInput.setDisable(true);
-        });
-    }
 
     private void updateElevatorQueueStatus() {
         for (int i = 0; i < RunnableBuilding.elevators; i++) {
@@ -119,7 +104,6 @@ public class HelloApplication extends Application {
      * these are the small square items of 12px to indicate if the floor elevator has been called or not.
      */
     private void updateCalledSigns() {
-        ((Rectangle) scene.lookup("#called1")).setFill(Color.rgb(0, 255, 0));
         for (int i = 0; i < RunnableBuilding.floors; i++) {
             Rectangle calledContainer = (Rectangle) scene.lookup("#called"+i);
             for (int j = 0; j < RunnableBuilding.elevators; j++) {
@@ -143,6 +127,24 @@ public class HelloApplication extends Application {
         this.updateCalledSigns();
 
         RunnableBuilding.building.scheduler.run();
+    }
+
+    private void handleInternalFloorInput(int index) {
+        ElevatorController elevator = RunnableBuilding.building.elevators.get(index);
+        TextField internalInput = (TextField) scene.lookup("#internal"+index);
+        internalInput.textProperty().addListener((observableValue, oldValue, newValue) -> {
+
+            try {
+                Integer value = Integer.parseInt(newValue);
+                if (value < 0 || value > RunnableBuilding.floors) {
+                    System.out.println("INVALID INPUT");
+                } else {
+                    elevator.internalRequest(value);
+                }
+            } catch(Exception err) {}
+            internalInput.setText("");
+            internalInput.setDisable(true);
+        });
     }
 
     private void handleUpCalls() {
@@ -179,30 +181,52 @@ public class HelloApplication extends Application {
         }
     }
 
+    public void handleClearUpdateSystem() {
+        Label container = (Label) scene.lookup("#systemupdate");
+        container.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                container.setText("");
+            }
+        });
+    }
+    public void setUpdateSystem(String message) {
+        Label container = (Label) scene.lookup("#systemupdate");
+        container.setText(message + (message.length() > 0 ? "  x" : ""));
+
+    }
+
     public void handleLock() {
         for (int i = 0; i < RunnableBuilding.elevators; i++) {
             Button button = (Button) scene.lookup("#lock"+i);
             button.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    boolean locked = RunnableBuilding.building.scheduler.isGroundLocked();
-                    Button groundButton = (Button) scene.lookup("#groundLock");
+                    boolean locked = RunnableBuilding.building.scheduler.isFireLocked();
+                    Button fireButton = (Button) scene.lookup("#fireLock");
 
                     if (locked) {
                         // we have to unlock it
-                        RunnableBuilding.building.scheduler.disableGroundLock();
-                        groundButton.setText("GROUND LOCK");
+                        RunnableBuilding.building.scheduler.disableFireLock();
+                        fireButton.setText("FIRE LOCK");
                         button.setText("ALARM");
+                        setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
                     } else {
-                        RunnableBuilding.building.scheduler.enableGroundLock();
-                        groundButton.setText("GROUND UNLOCK");
+                        RunnableBuilding.building.scheduler.enableFireLock();
+                        fireButton.setText("FIRE UNLOCK");
                         button.setText("DIS ALARM");
+                        setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
                     }
                 }
             });
         }
     }
 
+
+
+    /**
+     * The ground lock blocks all the elevators. The elevators are sent to the ground floor.
+     */
     private void handleGroundLock() {
         Button button = (Button) scene.lookup("#groundLock");
         button.setOnAction(new EventHandler<ActionEvent>() {
@@ -211,9 +235,32 @@ public class HelloApplication extends Application {
                 if (RunnableBuilding.building.scheduler.isGroundLocked()) {
                     button.setText("GROUND LOCK");
                     RunnableBuilding.building.scheduler.disableGroundLock();
+                    setUpdateSystem("The elevators has been unlocked.\nAll elevators to the ground floor.");
                 } else {
                     button.setText("GROUND UNLOCK");
                     RunnableBuilding.building.scheduler.enableGroundLock();
+                    setUpdateSystem("The elevators has been locked.\nAll elevators to the ground floor.");
+                }
+            }
+        });
+    }
+
+    /**
+     * The ground lock blocks all the elevators. The elevators are sent to the ground floor.
+     */
+    public void handleFireLock() {
+        Button button = (Button) scene.lookup("#fireLock");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (RunnableBuilding.building.scheduler.isFireLocked()) {
+                    button.setText("FIRE LOCK");
+                    RunnableBuilding.building.scheduler.disableFireLock();
+                    setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
+                } else {
+                    button.setText("FIRE UNLOCK");
+                    RunnableBuilding.building.scheduler.enableFireLock();
+                    setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
                 }
             }
         });
@@ -237,7 +284,8 @@ public class HelloApplication extends Application {
                     exit.setVisible(true);
                     firemanEnter.setVisible(false);
                 } else {
-                    System.out.println("ERROR: WRONG PASSWORD.");
+                    Console.log("APPLICATION", "WRONG PASSWORD");
+                    setUpdateSystem("Wrong password.");
                 }
             }
         });
@@ -258,6 +306,8 @@ public class HelloApplication extends Application {
                 exit.setVisible(false);
                 firemanEnter.setVisible(true);
 
+                setUpdateSystem("Exit successful.");
+                Console.log("APPLICATION", "FIREMAN EXITED.");
             }
         });
     }
@@ -273,8 +323,10 @@ public class HelloApplication extends Application {
         this.handleDownCalls();
         this.handleLock();
         this.handleGroundLock();
+        this.handleFireLock();
         this.handleAccessFiremanPanel();
         this.handleExitFiremanPanel();
+        this.handleClearUpdateSystem();
     }
 
     public static void main(String[] args) {

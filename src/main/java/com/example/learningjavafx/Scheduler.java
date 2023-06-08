@@ -96,10 +96,15 @@ public class Scheduler {
      * Global elevators ground lock boolean
      */
     private boolean groundLocked;
+    /**
+     * Global elevator fire lock boolean
+     */
+    private boolean fireLocked;
 
     public Scheduler(ArrayList<ElevatorController> controllers) {
         this.elevatorControllers = controllers;
         this.groundLocked = false;
+        this.fireLocked = false;
     }
 
     public void acceptRequestAndProcess(ElevatorDirection requestElevatorDirection, int requestFloor) {
@@ -377,6 +382,30 @@ public class Scheduler {
      */
     public boolean isGroundLocked() {
         return this.groundLocked;
+    }
+
+    /**
+     * Enable fire lock
+     */
+    public void enableFireLock() {
+        Console.log("SCHEDULER", "FIRE LOCK: ON");
+        for (ElevatorController controller : this.elevatorControllers) controller.enableFireLock();
+        this.fireLocked = true;
+    }
+
+    /**
+     * Disable fire lock
+     */
+    public void disableFireLock() {
+        Console.log("SCHEDULER", "FIRE LOCK: OFF");
+        for (ElevatorController controller : this.elevatorControllers) controller.disableFireLock();
+        this.fireLocked = false;
+    }
+    /**
+     * Check if the elevator is fire lock
+     */
+    public boolean isFireLocked() {
+        return this.fireLocked;
     }
 
 }

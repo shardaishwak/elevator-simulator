@@ -44,7 +44,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="com.example.learningjavafx.HelloController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.learningjavafx.HelloController">
   <children>
     <AnchorPane maxHeight="433.0" maxWidth="648.0" prefHeight="433.0" prefWidth="648.0" VBox.vgrow="ALWAYS">
       <children>
@@ -113,7 +113,7 @@
             </Button>
             <Label layoutX="252.0" layoutY="3.0" text="ELEVATOR SIMULATOR" />
             <Label layoutX="489.0" layoutY="90.0" text="FIREMAN CONTROLS" />
-            <Button visible="false" fx:id="groundLock" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="GROUND LOCK">
+            <Button fx:id="groundLock" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="GROUND LOCK" visible="false">
                <font>
                   <Font size="10.0" />
                </font></Button>
@@ -121,7 +121,7 @@
               <font>
                   <Font size="10.0" />
               </font></Button>
-            <Button visible="false" fx:id="fireLock" defaultButton="true" layoutX="516.0" layoutY="193.0" mnemonicParsing="false" text="FIRE LOCK">
+            <Button fx:id="fireLock" defaultButton="true" layoutX="516.0" layoutY="193.0" mnemonicParsing="false" text="FIRE LOCK" visible="false">
                <font>
                   <Font size="10.0" />
                </font></Button>
@@ -217,7 +217,7 @@
             <TextField fx:id="internal1" disable="true" layoutX="305.0" layoutY="407.0" prefHeight="26.0" prefWidth="30.0" />
             <TextField fx:id="internal2" disable="true" layoutX="373.0" layoutY="408.0" prefHeight="26.0" prefWidth="30.0" />
             <PasswordField fx:id="firemanpassword" layoutX="470.0" layoutY="116.0" promptText="Enter fireman password" />
-            <Button visible="false" fx:id="firemanexit" layoutX="529.0" layoutY="226.0" mnemonicParsing="false" text="EXIT">
+            <Button fx:id="firemanexit" layoutX="529.0" layoutY="226.0" mnemonicParsing="false" text="EXIT" visible="false">
                <font>
                   <Font size="10.0" />
                </font>
@@ -230,6 +230,7 @@
             <Rectangle fx:id="called2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="272.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
             <Rectangle fx:id="called1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="305.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
             <Rectangle fx:id="called0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="340.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Label fx:id="systemupdate" layoutX="501.0" layoutY="413.0" text="" />
       </children>
     </AnchorPane>
   </children>
