@@ -158,7 +158,7 @@ public class ElevatorController {
      * In all cases, the elevator needs to stop.
      */
     public void addRequest(int requestFloor) {
-        if (requestFloor > 8 || requestFloor < 0) {
+        if (requestFloor > 7 || requestFloor < 0) {
             this.console("ERROR: INVALID INPUT. EXPECTED RANGE FOR FLOOR [0,8]");
             return;
         }

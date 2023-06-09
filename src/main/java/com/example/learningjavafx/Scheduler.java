@@ -408,4 +408,9 @@ public class Scheduler {
         return this.fireLocked;
     }
 
+    public void sendElevatorsToOptimalPosition() {
+        this.elevatorControllers.get(1).addRequest(4);
+        this.elevatorControllers.get(2).addRequest(7);
+    }
+
 }

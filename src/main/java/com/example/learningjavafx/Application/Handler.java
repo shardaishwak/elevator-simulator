@@ -19,8 +19,9 @@ public class Handler {
 
             try {
                 Integer value = Integer.parseInt(newValue);
-                if (value < 0 || value > RunnableBuilding.floors) {
+                if (value < 0 || value >= RunnableBuilding.floors) {
                     System.out.println("INVALID INPUT");
+                    RunnableApplication.setUpdateSystem("Invalid floor value");
                 } else {
                     elevator.internalRequest(value);
                 }
@@ -77,12 +78,12 @@ public class Handler {
                         // we have to unlock it
                         RunnableBuilding.building.scheduler.disableFireLock();
                         fireButton.setText("FIRE LOCK");
-                        button.setText("ALARM");
+                        updateAlarmButtonsStatus("ALARM", false);
                         RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
                     } else {
                         RunnableBuilding.building.scheduler.enableFireLock();
                         fireButton.setText("FIRE UNLOCK");
-                        button.setText("DIS ALARM");
+                        updateAlarmButtonsStatus("DIS ALARM", false);
                         RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
                     }
                 }
@@ -101,10 +102,12 @@ public class Handler {
                 if (RunnableBuilding.building.scheduler.isGroundLocked()) {
                     button.setText("GROUND LOCK");
                     RunnableBuilding.building.scheduler.disableGroundLock();
+                    updateAlarmButtonsStatus("ALARM", false);
                     RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the ground floor.");
                 } else {
                     button.setText("GROUND UNLOCK");
                     RunnableBuilding.building.scheduler.enableGroundLock();
+                    updateAlarmButtonsStatus("LOCKED", true);
                     RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the ground floor.");
                 }
             }
@@ -122,16 +125,29 @@ public class Handler {
                 if (RunnableBuilding.building.scheduler.isFireLocked()) {
                     button.setText("FIRE LOCK");
                     RunnableBuilding.building.scheduler.disableFireLock();
+                    updateAlarmButtonsStatus("ALARM", false);
                     RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
                 } else {
                     button.setText("FIRE UNLOCK");
                     RunnableBuilding.building.scheduler.enableFireLock();
+                    updateAlarmButtonsStatus("LOCKED", true);
                     RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
                 }
             }
         });
     }
 
+
+    /**
+     * Change the status of all alarm buttons
+     */
+    public void updateAlarmButtonsStatus(String status, boolean disabled) {
+        for (int i = 0; i < RunnableBuilding.elevators; i++) {
+            Button alarm = (Button) RunnableApplication.scene.lookup("#lock"+i);
+            alarm.setText(status);
+            alarm.setDisable(disabled);
+        }
+    }
     // ID: firemanexit
     // ID: firemanpassword
     public void handleAccessFiremanPanel() {

@@ -92,7 +92,7 @@
                   <Rectangle fx:id="e21" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="30.0" layoutX="143.0" layoutY="180.0" stroke="#b2b2b2" strokeType="INSIDE" width="30.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                </children>
             </GridPane>
-            <Button fx:id="lock0" layoutX="231.0" layoutY="45.0" mnemonicParsing="false" text="ALARM">
+            <Button fx:id="lock0" layoutX="231.0" layoutY="53.0" mnemonicParsing="false" text="ALARM">
                <font>
                   <Font size="10.0" />
                </font>
@@ -102,17 +102,20 @@
                   <Font size="9.0" />
                </font>
             </Button>
-            <Button fx:id="lock1" layoutX="297.0" layoutY="44.0" mnemonicParsing="false" text="ALARM">
+            <Button fx:id="lock1" layoutX="297.0" layoutY="52.0" mnemonicParsing="false" text="ALARM">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button fx:id="lock2" layoutX="365.0" layoutY="44.0" mnemonicParsing="false" text="ALARM">
+            <Button fx:id="lock2" layoutX="365.0" layoutY="52.0" mnemonicParsing="false" text="ALARM">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Label layoutX="252.0" layoutY="3.0" text="ELEVATOR SIMULATOR" />
+            <Label layoutX="241.0" layoutY="3.0" style="-fx-font-weight: 600;" text="ELEVATOR SIMULATOR" textFill="#243254" underline="true">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
             <Label layoutX="489.0" layoutY="90.0" text="FIREMAN CONTROLS" />
             <Button fx:id="groundLock" defaultButton="true" layoutX="506.0" layoutY="160.0" mnemonicParsing="false" text="GROUND LOCK" visible="false">
                <font>
@@ -231,6 +234,46 @@
             <Rectangle fx:id="called2" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="272.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
             <Rectangle fx:id="called1" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="305.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
             <Rectangle fx:id="called0" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="12.0" layoutX="86.0" layoutY="340.0" stroke="#b2b2b2" strokeType="INSIDE" width="12.0" />
+            <Label layoutX="61.0" layoutY="101.0" text="7">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="138.0" text="6">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="174.0" text="5">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="205.0" text="4">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="240.0" text="3">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="272.0" text="2">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="305.0" text="1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="61.0" layoutY="338.0" text="0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
       </children>
     </AnchorPane>
       <Label fx:id="systemupdate" prefHeight="250.0" prefWidth="641.0" style="-fx-padding: 12px;" textOverrun="CLIP" wrapText="true">

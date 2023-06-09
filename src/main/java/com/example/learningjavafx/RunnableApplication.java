@@ -61,9 +61,7 @@ public class RunnableApplication extends javafx.application.Application {
     }
     public static void setUpdateSystem(String message) {
         Label container = (Label) scene.lookup("#systemupdate");
-        System.out.println(container.getText());
         container.setText(message + (message.length() > 0 ? "  x" : ""));
-        System.out.println(container.getText());
     }
 
     private void update() {
@@ -74,6 +72,10 @@ public class RunnableApplication extends javafx.application.Application {
         this.updater.updateCalledSigns();
 
         RunnableBuilding.building.scheduler.run();
+    }
+
+    private void sendElevatorToOptimalPosition() {
+        RunnableBuilding.building.scheduler.sendElevatorsToOptimalPosition();
     }
 
     private void setup() {
@@ -90,6 +92,11 @@ public class RunnableApplication extends javafx.application.Application {
         this.handler.handleExitFiremanPanel();
         this.update();
         handleClearUpdateSystem();
+
+        // Initial position of the elevators
+        RunnableBuilding.building.scheduler.sendElevatorsToOptimalPosition();
+        setUpdateSystem("Sending elevators to optimal position");
+
     }
 
     public static void main(String[] args) {
