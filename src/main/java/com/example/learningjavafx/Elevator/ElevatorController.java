@@ -69,15 +69,27 @@ public class ElevatorController {
      */
     private boolean locked;
 
+    /**
+     * Status for the firelock: if locked it will be true and we can retrieve the infomration to update the system
+     */
     private boolean fireLock;
+    /**
+     * Status for the ground lock: if locked it will be true and we can retrieve the infomration to update the system
+     */
     private boolean groundLock;
 
     /**
      * After calling the elevator, we have to wait until the user does not enter the input
+     * We will add all the request that requre waiting until user enters the destination floor
+     * in this hashset. For each update we will check if there is a current floor match value
+     * if ther is, the elevator will not not move.
      */
-    private HashSet<Integer> userInputRequest;
+    private final HashSet<Integer> userInputRequest;
 
-    private Door door;
+    /**
+     * An instance representing the door.
+     */
+    private final Door door;
 
 
 
@@ -101,7 +113,6 @@ public class ElevatorController {
 
     /**
      * Constructor with parameter
-     * @param initialFloor
      */
     public ElevatorController(int initialFloor) {
         /**
@@ -146,10 +157,20 @@ public class ElevatorController {
         this.userInputRequest.remove(this.currentFloor);
         this.addRequest(requestFloor);
     }
+
+    /**
+     * In the external request, we will add the floor to the hashset for upcoming waiting queue.
+     * @param requestFloor
+     */
     public void externalRequest(int requestFloor) {
         this.userInputRequest.add(requestFloor);
         this.addRequest(requestFloor);
     }
+
+    /**
+     * Check if the elevator has to wait until the user enters the input
+     * @return
+     */
     public boolean hasToWaitUserInput() {
         return this.userInputRequest.contains(this.currentFloor);
     }
@@ -224,23 +245,18 @@ public class ElevatorController {
             this.currentQueue.poll();
             // There are chances that the requests to one direction have finished but there is the other direction to process
 
-            /*System.out.println("+++++++++++++++++++++++++++");
-            System.out.println("Request floor reached.");
-            System.out.println("+++++++++++++++++++++++++++");
-             */
             this.console("FLOOR: REACHED ("+this.currentFloor+")");
 
             // TODO: Initialize opening procedure
             return;
         }
+        // Handle the direction of the elevator
         if (this.elevatorDirection == ElevatorDirection.UP) {
 
             this.setElevatorFloor(this.currentFloor+1);
-            //this.getStatus();
 
         } else if (this.elevatorDirection == ElevatorDirection.DOWN) {
             this.setElevatorFloor(this.currentFloor-1);
-            //this.getStatus();
         }
 
 
@@ -265,11 +281,17 @@ public class ElevatorController {
      */
     public void move() {
 
+        /**
+         * Do not move if has to wait user inpt
+         */
         if (this.hasToWaitUserInput()) {
             this.console("WAITING USER TO ENTER THE FLOOR");
             return;
         }
 
+        /**
+         * Do not move if elevator is locked.
+         */
         if (this.locked) {
             this.console("ERROR: CALLED MOVE BUT LOCKED ELEVATOR - NO REQUEST CAN BE PROCESSED");
             return;
@@ -283,7 +305,6 @@ public class ElevatorController {
             // if we have to change the direction, do It
             this.changeDirectionIfRequired();
             this.processNextRequest();
-            //this.print();
             this.console("FLOOR: " + this.currentFloor);
 
         }
@@ -330,6 +351,7 @@ public class ElevatorController {
      * Change the direction of the elevator if there is no request to process in the same direction
      */
     private void changeDirectionIfRequired() {
+        // Check if ther is no requiest to process
         if (!isIDLEMode() && this.currentQueue.peek() == null) {
             if (this.elevatorDirection == ElevatorDirection.UP) this.changeDirectionToDown();
             else this.changeDirectionToUp();
@@ -344,6 +366,9 @@ public class ElevatorController {
         this.currentFloor = floor;
     }
 
+    /**
+     * Simple printable method to show all the status of the elevator
+     */
     public void getStatus() {
         System.out.println("Current Floor: " + this.currentFloor);
         System.out.println("Current Enum.Direction: " + this.elevatorDirection);
@@ -353,6 +378,9 @@ public class ElevatorController {
         System.out.println("=================================================");
     }
 
+    /**
+     * Print method to print the state of the elevator on the console.
+     */
     public void print() {
         for(int i = 0; i < 30; i++)
         {
@@ -390,10 +418,15 @@ public class ElevatorController {
     // Get the ID of the elevator
     public UUID getID() {return this.ID;}
 
+    // Get the direction of the elevator
     public void setDirection(ElevatorDirection elevatorDirection) {this.elevatorDirection = elevatorDirection;}
+    // Get the current queue list
     public PriorityQueue<Integer> getCurrentQueue() {return this.currentQueue;}
+    // Get the up queue list
     public PriorityQueue<Integer> getUpQueue() {return this.upQueue;}
+    // Get the down queue list
     public PriorityQueue<Integer> getDownQueue() {return this.downQueue;}
+    // Get the door instance.
     public Door getDoor() {return this.door;}
 
 

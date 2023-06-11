@@ -119,6 +119,9 @@ public class Scheduler {
         optimalElevator.externalRequest(requestFloor);
     }
 
+    /**
+     * Find the most optimal elevator given the contrainst of requestDirection and floor
+     */
     private ElevatorController findOptimalElevator(ElevatorDirection requestElevatorDirection, int requestFloor) {
         // WE would not consider the locked the elevators
         ArrayList<ElevatorController> unlockedElevators = new ArrayList<>();
@@ -327,16 +330,8 @@ public class Scheduler {
     public void run() {
         for (ElevatorController controller : this.elevatorControllers) {
             controller.move();
-            //controller.getStatus();
         }
     }
-
-
-    /**
-     * Getter and setters
-     */
-
-
     /**
      * ALL THE METHODS FOR EMERGENCY SITUATION
      * Trigger the alarm: lock the elevator to the current floor
@@ -408,6 +403,10 @@ public class Scheduler {
         return this.fireLocked;
     }
 
+    /**
+     * Send the elevator to the initial most optimal positions
+     * Those they are the division of the elevators to the top most bottom elevator.
+     */
     public void sendElevatorsToOptimalPosition() {
         this.elevatorControllers.get(1).addRequest(4);
         this.elevatorControllers.get(2).addRequest(7);

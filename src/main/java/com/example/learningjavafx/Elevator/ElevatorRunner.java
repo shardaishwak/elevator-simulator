@@ -7,6 +7,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Creating the runnable class for enabling animation using multithread and concurrency features.
+ */
 public class ElevatorRunner {
     /**
      * It is efficient to declare the data fields that do no expect to be changed as final in the Runnable Inheritance
@@ -37,6 +40,7 @@ public class ElevatorRunner {
         // Thread 1: Listen for user Input
         // Thread 2: Process the movement
         // Thread 1
+        /// Creating various threads
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(runner, 0, 1, TimeUnit.SECONDS);
         // Thread 2

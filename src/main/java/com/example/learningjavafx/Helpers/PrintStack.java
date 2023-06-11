@@ -8,6 +8,10 @@ import javafx.scene.control.Label;
 import java.util.Iterator;
 import java.util.Stack;
 
+/**
+ * A stack based class to show the messages in stack: remove and add the messages and remove the firs tone
+ * when necessary.
+ */
 public class PrintStack {
     private Stack<String> stack;
     private int maxLength;

@@ -4,6 +4,10 @@ import com.example.learningjavafx.Elevator.ElevatorController;
 
 import java.util.Scanner;
 
+/**
+ * Joint with the Elevator Runner, the class uses multi-thread capabilities
+ * we can enter the input for the request as the state update the elevators.
+ */
 public class ScannerRunnable implements Runnable {
     private Scanner scanner;
     private ElevatorController controller;
