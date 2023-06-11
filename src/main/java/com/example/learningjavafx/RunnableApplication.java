@@ -2,22 +2,18 @@ package com.example.learningjavafx;
 
 import com.example.learningjavafx.Application.Handler;
 import com.example.learningjavafx.Application.Updater;
-import com.example.learningjavafx.Helpers.PrintStack;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 
 /**
- * Main entrypoing for JAVAFX: initializing the components and rendering the elements
+ * Main entrypoint for JAVAFX: initializing the components and rendering the elements
  * using a timeframe of 1 second and loop infinitely.
  */
 public class RunnableApplication extends javafx.application.Application {
@@ -31,7 +27,7 @@ public class RunnableApplication extends javafx.application.Application {
      */
     private Handler handler;
     /**
-     * Creating an instanece of the Updater Object: update the state of the elevators and movement
+     * Creating an instance of the Updater Object: update the state of the elevators and movement
      */
     private Updater updater;
 
@@ -42,7 +38,7 @@ public class RunnableApplication extends javafx.application.Application {
     public void start(Stage stage) throws IOException {
         // Get the FXML file to render inside the scene.
         FXMLLoader fxmlLoader = new FXMLLoader(RunnableApplication.class.getResource("elevator.fxml"));
-        // Setup the internal frame
+        // Set up the internal frame
         Scene internalScene = new Scene(fxmlLoader.load(), 650, 600);
 
         // Adding the value to the scene
@@ -66,12 +62,7 @@ public class RunnableApplication extends javafx.application.Application {
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(1),
-                        new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                update();
-                            }
-                        }
+                        actionEvent -> update()
                 )
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -83,18 +74,12 @@ public class RunnableApplication extends javafx.application.Application {
      */
     public static void handleClearUpdateSystem() {
         Label container = (Label) scene.lookup("#systemupdate");
-        container.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            // if the user clicks on the message, clear the message.
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                container.setText("");
-            }
-        });
+        // if the user clicks on the message, clear the message.
+        container.setOnMouseClicked(mouseEvent -> container.setText(""));
     }
 
     /**
      * Add a log to the panel: this is the bottom messages that we can see in the graphics.
-     * @param message
      */
     public static void setUpdateSystem(String message) {
         Label container = (Label) scene.lookup("#systemupdate");
@@ -107,7 +92,7 @@ public class RunnableApplication extends javafx.application.Application {
     private void update() {
         // NOTE: call is floor reached before calling move
         // Elevator 1
-        // Updat the queue status
+        // Update the queue status
         this.updater.updateElevatorQueueStatus();
         // Update the elevator color floor status
         this.updater.updateElevatorsState();

@@ -8,11 +8,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Creating the runnable class for enabling animation using multithread and concurrency features.
+ * Creating the runnable class for enabling animation using multithreading and concurrency features.
  */
 public class ElevatorRunner {
     /**
-     * It is efficient to declare the data fields that do no expect to be changed as final in the Runnable Inheritance
+     * It is efficient to declare the data fields that do not expect to be changed as final in the Runnable Inheritance
      * An object reference that is declared as final ensures that the object it refers to will be fully constructed
      * and initialized before the usage in the system.
      */
@@ -24,12 +24,7 @@ public class ElevatorRunner {
 
     public void run(Scanner scanner) {
         // Create a runnable thread for move
-        Runnable elevatorRunner = new Runnable() {
-            @Override
-            public void run() {
-                controller.move();
-            }
-        };
+        Runnable elevatorRunner = controller::move;
 
         ScannerRunnable runner = new ScannerRunnable(scanner, controller);
 

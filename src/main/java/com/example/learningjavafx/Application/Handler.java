@@ -2,11 +2,9 @@ package com.example.learningjavafx.Application;
 
 import com.example.learningjavafx.Elevator.ElevatorController;
 import com.example.learningjavafx.Enumerations.ElevatorDirection;
-import com.example.learningjavafx.RunnableApplication;
 import com.example.learningjavafx.Helpers.Console;
+import com.example.learningjavafx.RunnableApplication;
 import com.example.learningjavafx.RunnableBuilding;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -14,7 +12,7 @@ import javafx.scene.control.TextField;
 /**
  * Handling all the component and their actions
  * We are not using the controller Class because
- * the elements are targetted dynamically:
+ * the elements are targeted dynamically:
  * my this I mean, in RunnableController would require
  * to instantiate each element and then target them.
  * But with the Handler, we can call the RunnableApplication
@@ -25,11 +23,10 @@ import javafx.scene.control.TextField;
  */
 public class Handler {
     /**
-     * Handl the internal input from the user
+     * Handle the internal input from the user
      * When the elevator reached the user request floor
      * the elevator will remain stop until the user has not entered the
      * destination floor. After adding the floor, the elevator will continue in the direction.
-     * @param index
      */
     public void handleInternalFloorInput(int index) {
         // Getting the target elevator
@@ -75,12 +72,9 @@ public class Handler {
             }
             int finalI = i;
             // Add button click listener
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // When clicked, add the request to the queue.
-                    RunnableBuilding.building.scheduler.acceptRequestAndProcess(ElevatorDirection.UP, finalI);
-                }
+            button.setOnAction(event -> {
+                // When clicked, add the request to the queue.
+                RunnableBuilding.building.scheduler.acceptRequestAndProcess(ElevatorDirection.UP, finalI);
             });
         }
     }
@@ -91,21 +85,18 @@ public class Handler {
     public void handleDownCalls() {
         for (int i = 0; i < RunnableBuilding.floors; i++) {
             // Looping each floor
-            // Each button has index type: calldown[index] where index is the index of the floor, so i.
+            // Each button has index type: call down[index] where index is the index of the floor, so i.
             Button button = (Button) RunnableApplication.scene.lookup("#calldown"+i);
-            // If the button is on the first floor, do not show it becasuse cannot go down further.
+            // If the button is on the first floor, do not show it because cannot go down further.
             if (i == 0) {
                 button.setVisible(false);
                 continue;
             }
             int finalI = i;
             // Add the click event listener.
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // Add the request to the queue.
-                    RunnableBuilding.building.scheduler.acceptRequestAndProcess(ElevatorDirection.UP, finalI);
-                }
+            button.setOnAction(event -> {
+                // Add the request to the queue.
+                RunnableBuilding.building.scheduler.acceptRequestAndProcess(ElevatorDirection.UP, finalI);
             });
         }
     }
@@ -120,86 +111,77 @@ public class Handler {
             // Target the elevator button
             Button button = (Button) RunnableApplication.scene.lookup("#lock"+i);
             // Add click event listener to the button
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // Get status of the elevator: locked or not
-                    boolean locked = RunnableBuilding.building.scheduler.isFireLocked();
-                    // Get the firelock button
-                    Button fireButton = (Button) RunnableApplication.scene.lookup("#fireLock");
+            button.setOnAction(event -> {
+                // Get status of the elevator: locked or not
+                boolean locked = RunnableBuilding.building.scheduler.isFireLocked();
+                // Get the forelock button
+                Button fireButton = (Button) RunnableApplication.scene.lookup("#fireLock");
 
-                    // If the elevator was locked, we will unlock the elevator
-                    // We will also disable the fire alarm and the fireman can intervene here.
-                    if (locked) {
-                        // we have to unlock it
-                        RunnableBuilding.building.scheduler.disableFireLock();
-                        fireButton.setText("FIRE LOCK");
-                        updateAlarmButtonsStatus("ALARM", false);
-                        RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
-                    } else {
-                        // We will enable the fire lock
-                        // All elevators are stopped
-                        // Only the fireman from its panel can unlock the system.
-                        RunnableBuilding.building.scheduler.enableFireLock();
-                        fireButton.setText("FIRE UNLOCK");
-                        updateAlarmButtonsStatus("DIS ALARM", false);
-                        RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
-                    }
+                // If the elevator was locked, we will unlock the elevator
+                // We will also disable the fire alarm and the fireman can intervene here.
+                if (locked) {
+                    // we have to unlock it
+                    RunnableBuilding.building.scheduler.disableFireLock();
+                    fireButton.setText("FIRE LOCK");
+                    updateAlarmButtonsStatus("ALARM", false);
+                    RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
+                } else {
+                    // We will enable the fire lock
+                    // All elevators are stopped
+                    // Only the fireman from its panel can unlock the system.
+                    RunnableBuilding.building.scheduler.enableFireLock();
+                    fireButton.setText("FIRE UNLOCK");
+                    updateAlarmButtonsStatus("DIS ALARM", false);
+                    RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
                 }
             });
         }
     }
 
     /**
-     * The ground lock blocks all the elevators. The elevators are sent to the ground floor.
+     * The ground lock blocks all the elevators. The elevators are sent to the first floor.
      */
     public void handleGroundLock() {
         // Target the button
         Button button = (Button) RunnableApplication.scene.lookup("#groundLock");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            // Add click event listener
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                // If the elevator is locked.
-                if (RunnableBuilding.building.scheduler.isGroundLocked()) {
-                    // Disable the ground lock and the elvators are on the first floor.
-                    button.setText("GROUND LOCK");
-                    RunnableBuilding.building.scheduler.disableGroundLock();
-                    updateAlarmButtonsStatus("ALARM", false);
-                    RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the ground floor.");
-                } else {
-                    // Enable the ground lock: elevators sent to the first floor.
-                    button.setText("GROUND UNLOCK");
-                    RunnableBuilding.building.scheduler.enableGroundLock();
-                    updateAlarmButtonsStatus("LOCKED", true);
-                    RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the ground floor.");
-                }
+        // Add click event listener
+        button.setOnAction(actionEvent -> {
+            // If the elevator is locked.
+            if (RunnableBuilding.building.scheduler.isGroundLocked()) {
+                // Disable the ground lock and the elevators are on the first floor.
+                button.setText("GROUND LOCK");
+                RunnableBuilding.building.scheduler.disableGroundLock();
+                updateAlarmButtonsStatus("ALARM", false);
+                RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the ground floor.");
+            } else {
+                // Enable the ground lock: elevators sent to the first floor.
+                button.setText("GROUND UNLOCK");
+                RunnableBuilding.building.scheduler.enableGroundLock();
+                updateAlarmButtonsStatus("LOCKED", true);
+                RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the ground floor.");
             }
         });
     }
 
     /**
-     * The ground lock blocks all the elevators. The elevators are sent to the ground floor.
+     * The ground lock blocks all the elevators. The elevators are sent to the first floor.
      */
     public void handleFireLock() {
         Button button = (Button) RunnableApplication.scene.lookup("#fireLock");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            // Add click event listener
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                // If already locked, unlock
-                if (RunnableBuilding.building.scheduler.isFireLocked()) {
-                    button.setText("FIRE LOCK");
-                    RunnableBuilding.building.scheduler.disableFireLock();
-                    updateAlarmButtonsStatus("ALARM", false);
-                    RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
-                } else {
-                    // Add the fire lock: elevator are sent to the last floor for exit.
-                    button.setText("FIRE UNLOCK");
-                    RunnableBuilding.building.scheduler.enableFireLock();
-                    updateAlarmButtonsStatus("LOCKED", true);
-                    RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
-                }
+        // Add click event listener
+        button.setOnAction(actionEvent -> {
+            // If already locked, unlock
+            if (RunnableBuilding.building.scheduler.isFireLocked()) {
+                button.setText("FIRE LOCK");
+                RunnableBuilding.building.scheduler.disableFireLock();
+                updateAlarmButtonsStatus("ALARM", false);
+                RunnableApplication.setUpdateSystem("The elevators has been unlocked.\nAll elevators to the last floor.");
+            } else {
+                // Add the fire lock: elevator are sent to the last floor for exit.
+                button.setText("FIRE UNLOCK");
+                RunnableBuilding.building.scheduler.enableFireLock();
+                updateAlarmButtonsStatus("LOCKED", true);
+                RunnableApplication.setUpdateSystem("The elevators has been locked.\nAll elevators to the last floor.");
             }
         });
     }
@@ -215,42 +197,38 @@ public class Handler {
             alarm.setDisable(disabled);
         }
     }
-    // ID: firemanexit
-    // ID: firemanpassword
+    // ID: fireman-exit
+    // ID: fireman password
 
     /**
-     * HAndle the password input enterning of the fireman and unlock all the options for the fireman
-     *  the fireman can unlock the fire lock after triggered by an alarm
+     * Handle the password input entering of the fireman and unlock all the options for the fireman     *   can unlock the fire lock after triggered by an alarm
      *  and can send all the elevators to the ground lock.
      */
     public void handleAccessFiremanPanel() {
         // Getting the fireman Submit password button
         Button firemanEnter = (Button) RunnableApplication.scene.lookup("#firemanEnter");
-        firemanEnter.setOnAction(new EventHandler<ActionEvent>() {
-            // Add the click event
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                // Get the password field
-                String passwordValue = ((PasswordField) RunnableApplication.scene.lookup("#firemanpassword")).getText();
-                // check if the password is valid: secret is the password
-                if (passwordValue.equals("secret")) {
-                    // Get the ground, fire and exit button and enable them by making them visible.
-                    Button groundLock = (Button) RunnableApplication.scene.lookup("#groundLock");
-                    Button fireLock = (Button) RunnableApplication.scene.lookup("#fireLock");
-                    Button exit = (Button) RunnableApplication.scene.lookup("#firemanexit");
+        // Add the click event
+        firemanEnter.setOnAction(actionEvent -> {
+            // Get the password field
+            String passwordValue = ((PasswordField) RunnableApplication.scene.lookup("#firemanpassword")).getText();
+            // check if the password is valid: secret is the password
+            if (passwordValue.equals("secret")) {
+                // Get the ground, fire and exit button and enable them by making them visible.
+                Button groundLock = (Button) RunnableApplication.scene.lookup("#groundLock");
+                Button fireLock = (Button) RunnableApplication.scene.lookup("#fireLock");
+                Button exit = (Button) RunnableApplication.scene.lookup("#firemanexit");
 
-                    groundLock.setVisible(true);
-                    fireLock.setVisible(true);
-                    exit.setVisible(true);
-                    // Do not show the enter button
-                    firemanEnter.setVisible(false);
-                    Console.log("APPLICATION", "LOGIN SUCCESS");
-                    RunnableApplication.setUpdateSystem("Login success.");
-                } else {
-                    // Show that the password was wrong.
-                    Console.log("APPLICATION", "WRONG PASSWORD");
-                    RunnableApplication.setUpdateSystem("Wrong password.");
-                }
+                groundLock.setVisible(true);
+                fireLock.setVisible(true);
+                exit.setVisible(true);
+                // Do not show the enter button
+                firemanEnter.setVisible(false);
+                Console.log("APPLICATION", "LOGIN SUCCESS");
+                RunnableApplication.setUpdateSystem("Login success.");
+            } else {
+                // Show that the password was wrong.
+                Console.log("APPLICATION", "WRONG PASSWORD");
+                RunnableApplication.setUpdateSystem("Wrong password.");
             }
         });
     }
@@ -261,24 +239,21 @@ public class Handler {
     public void handleExitFiremanPanel() {
         // Target the exit button
         Button button = (Button) RunnableApplication.scene.lookup("#firemanexit");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            // Add the click listener to the targetted button
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                // Hide the ground, fire and exit button and show the firemanEnter and password field
-                Button groundLock = (Button) RunnableApplication.scene.lookup("#groundLock");
-                Button fireLock = (Button) RunnableApplication.scene.lookup("#fireLock");
-                Button exit = (Button) RunnableApplication.scene.lookup("#firemanexit");
-                Button firemanEnter = (Button) RunnableApplication.scene.lookup("#firemanEnter");
+        // Add the click listener to the targeted button
+        button.setOnAction(actionEvent -> {
+            // Hide the ground, fire and exit button and show the firemanEnter and password field
+            Button groundLock = (Button) RunnableApplication.scene.lookup("#groundLock");
+            Button fireLock = (Button) RunnableApplication.scene.lookup("#fireLock");
+            Button exit = (Button) RunnableApplication.scene.lookup("#firemanexit");
+            Button firemanEnter = (Button) RunnableApplication.scene.lookup("#firemanEnter");
 
-                groundLock.setVisible(false);
-                fireLock.setVisible(false);
-                exit.setVisible(false);
-                firemanEnter.setVisible(true);
+            groundLock.setVisible(false);
+            fireLock.setVisible(false);
+            exit.setVisible(false);
+            firemanEnter.setVisible(true);
 
-                RunnableApplication.setUpdateSystem("Exit successful.");
-                Console.log("APPLICATION", "FIREMAN EXITED.");
-            }
+            RunnableApplication.setUpdateSystem("Exit successful.");
+            Console.log("APPLICATION", "FIREMAN EXITED.");
         });
     }
 }

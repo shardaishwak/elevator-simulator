@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * The building class will contain an instance of the scheduler, floors and elevators moving
- * the vuilding will be identifiable with an id
+ * the building will be identifiable with an id
  */
 public class Building {
     private final UUID id;
@@ -56,7 +56,6 @@ public class Building {
 
     /**
      * Get the ID of the elevator
-     * @return
      */
     public UUID getId() {
         return id;

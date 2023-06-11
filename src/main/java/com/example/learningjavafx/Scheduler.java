@@ -8,21 +8,20 @@ import java.util.ArrayList;
 
 
 /**
- * The scheduler will determine the most efficient elevator for the passenger
+ *  * The scheduler will determine the most efficient elevator for the passenger
+ *  * <p>
+ *  * How to determine (checkpoint):
+ *  * <p>
+ *  * 1. User request elevator to go to up (each case should log sequentially):
+ *  * -> There is an elevator below the request floor that is going up: take the request
+ *  * -> Is there any IDLE elevator: take that
+ *  * -> There is no elevator below going up: take the first elevator that is below with direction down. After a while, it will move up.
+ *  * -> All elevators are up:
+ *  *  -> Take the one that is going down
+ *  *  -> if all going up, take the one that is not going down: this way, after serving all calls, the elevator will go to take the user
+ *  *
  * <p>
- * How to determine (checkpoint):
- * <p>
- * 1. User request elevator to go to up (each case should log sequentially):
- * -> There is an elevator below the request floor that is going up: take the request
- * -> Is there any IDLE elevator: take that
- * -> There is no elevator below going up: take the first elevator that is below with direction down. After a while, it will move up.
- * -> All elevators are up:
- *  -> Take the one that is going down
- *  -> if all going up, take the one that is not going down: this way, after serving all calls, the elevator will go to take the user
  *
- */
-
-/**
  * Difference elevator-request positions cases.
  * To find the most optimal elevator, we need to consider all the positions that the elevator and request
  * might be. In total there are 4 combinations of the direction between the elevator and passenger, considering the
@@ -120,7 +119,7 @@ public class Scheduler {
     }
 
     /**
-     * Find the most optimal elevator given the contrainst of requestDirection and floor
+     * Find the most optimal elevator given the constraint of requestDirection and floor
      */
     private ElevatorController findOptimalElevator(ElevatorDirection requestElevatorDirection, int requestFloor) {
         // WE would not consider the locked the elevators
@@ -356,7 +355,7 @@ public class Scheduler {
     }
 
     /**
-     * Enable ground floor lock for all elevators
+     * Enable first floor lock for all elevators
      */
     public void enableGroundLock() {
         Console.log("SCHEDULER", "GROUND LOCK: ON");
@@ -364,7 +363,7 @@ public class Scheduler {
         this.groundLocked = true;
     }
     /**
-     * Disable ground floor lock for all elevators
+     * Disable first floor lock for all elevators
      */
     public void disableGroundLock() {
         Console.log("SCHEDULER", "GROUND LOCK: OFF");

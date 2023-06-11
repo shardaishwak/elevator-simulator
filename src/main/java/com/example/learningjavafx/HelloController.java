@@ -19,6 +19,9 @@ public class HelloController implements Initializable {
     @FXML
     private Button button;
 
+    public HelloController() {
+    }
+
     @FXML
     protected void onHelloButtonClick() {
     }

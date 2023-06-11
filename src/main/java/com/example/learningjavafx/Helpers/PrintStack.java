@@ -13,8 +13,8 @@ import java.util.Stack;
  * when necessary.
  */
 public class PrintStack {
-    private Stack<String> stack;
-    private int maxLength;
+    private final Stack<String> stack;
+    private final int maxLength;
 
     public PrintStack(int maxLength) {
         this.stack = new Stack<>();
@@ -26,14 +26,14 @@ public class PrintStack {
 
     public void push(String message) {
         if (this.stack.size() == maxLength) stack.pop();
-        stack.push(new String(message));
+        stack.push(message);
         render();
     }
 
     private void render() {
         Label label = (Label) RunnableApplication.scene.lookup("#systemupdate");
         StringBuilder text = new StringBuilder();
-        for (String s : this.stack) text.append(s+"\n");
+        for (String s : this.stack) text.append(s).append("\n");
         label.setText(text.toString());
     }
 

@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * The updater methods are called by the Timeframe to refresh the graphic
  * on a particular interval.
- *
+ * <p>
  * These include the status of the elevator, the messages and the desired system control.
  */
 public class Updater {

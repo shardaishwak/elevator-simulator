@@ -20,7 +20,6 @@ public class Elevator {
         this.door = new Door();
         this.emergencyTrigger = false;
         this.locked = false;
-
     }
 
 }

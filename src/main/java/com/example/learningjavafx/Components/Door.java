@@ -21,7 +21,6 @@ public class Door {
 
     /**
      * SETTERS AND GETTERS
-     * @param status
      */
 
     public void setStatus(DoorStatus status) {

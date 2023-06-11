@@ -31,7 +31,6 @@ public class ExternalController {
 
     /**
      * Handle click on the button
-     * @param direction
      */
     public void onPress(ExternalDirection direction) {
         this.direction = direction;

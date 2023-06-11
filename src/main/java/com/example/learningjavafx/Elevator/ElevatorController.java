@@ -11,13 +11,13 @@ import java.util.UUID;
 
 /**
  * Algorithms explanation:
- *
+ * <p>
  * The elevator controller will have approximately three priority queues.
  * These priority queues will allow us to prioritize the floors from which the requests are coming.
  * For example, if the elevator has queues on floors 5, 7, and 9, and there is another request in the same direction for floor 8, we will prioritize floor 8 instead of 9, even if the request from floor 8 came after the request from floor 9.
  * The priority queue can be considered a sorted queue, but it is much more efficient than sorting an array every time a request needs to be added.
  * Sorting an array requires shifting elements at index n, which is computationally expensive when the array is long.
- *
+ * <p>
  * The three priority queues will be named the upQueue, downQueue, and currentQueue.
  * Depending on the direction of the elevator, the system will assign the corresponding direction queue to the currentQueue.
  * Once the current task is completed, we will invert the direction of the queue list.
@@ -46,12 +46,12 @@ public class ElevatorController {
      * direction compared to the current position
      */
 
-    private PriorityQueue<Integer> upQueue;
+    private final PriorityQueue<Integer> upQueue;
     /**
      * Based on the this.direction value, the currentQueue reference variable
      * will point to one of the upQueue or downQueue memory address.
      * For instance, if the elevator is going up, the currentQueue will be in upQueue.
-     *
+     * <p>
      *
      */
     private PriorityQueue<Integer> currentQueue;
@@ -60,7 +60,7 @@ public class ElevatorController {
      * The system will store all the requests that require the elevator to go in down
      * direction compared to the current position
      */
-    private PriorityQueue<Integer> downQueue;
+    private final PriorityQueue<Integer> downQueue;
 
     /**
      * The triggered for locking all the elevators to their current position
@@ -70,19 +70,19 @@ public class ElevatorController {
     private boolean locked;
 
     /**
-     * Status for the firelock: if locked it will be true and we can retrieve the infomration to update the system
+     * Status for the forelock: if locked it will be true, and we can retrieve the information to update the system
      */
     private boolean fireLock;
     /**
-     * Status for the ground lock: if locked it will be true and we can retrieve the infomration to update the system
+     * Status for the ground lock: if locked it will be true, and we can retrieve the information to update the system
      */
     private boolean groundLock;
 
     /**
      * After calling the elevator, we have to wait until the user does not enter the input
-     * We will add all the request that requre waiting until user enters the destination floor
+     * We will add all the request that require waiting until user enters the destination floor
      * in this hashset. For each update we will check if there is a current floor match value
-     * if ther is, the elevator will not not move.
+     * if there is, the elevator will not move.
      */
     private final HashSet<Integer> userInputRequest;
 
@@ -97,16 +97,16 @@ public class ElevatorController {
      * Contractor:
      * Initialize the queues to default values. downQueue will store items in the reverseOrder, as
      * the poll should return the maximum value in this case.
-     *
+     * <p>
      * Initially, all elevators are in IDLE mode, until a request has not been sent by the scheduler.
-     *
+     * <p>
      * Why reverseOrder?
      * When the elevator is going down, the priority is given to the highest value floors because it is
      * going in decreasing order of the floor.
      */
     public ElevatorController() {
         /**
-         * If not parameter provided to the constructor: the elevator initial floor is the ground floor.
+         * If not parameter provided to the constructor: the elevator initial floor is the first floor.
          */
         this(0);
     }
@@ -133,7 +133,7 @@ public class ElevatorController {
         this.currentFloor = initialFloor;
         /**
          * The direction of the elevator is based on the initial floor
-         *
+         * <p>
          * If the elevator is between the floor (4,8]: down direction
          * if the elevator is between the floor [0,4]: up direction
          */
@@ -160,7 +160,6 @@ public class ElevatorController {
 
     /**
      * In the external request, we will add the floor to the hashset for upcoming waiting queue.
-     * @param requestFloor
      */
     public void externalRequest(int requestFloor) {
         this.userInputRequest.add(requestFloor);
@@ -169,7 +168,6 @@ public class ElevatorController {
 
     /**
      * Check if the elevator has to wait until the user enters the input
-     * @return
      */
     public boolean hasToWaitUserInput() {
         return this.userInputRequest.contains(this.currentFloor);
@@ -231,10 +229,10 @@ public class ElevatorController {
     }
 
     /**
-     * process next requeuest
-     *
+     * process next request
+     * <p>
      * Get the next floor to process from the currentQueue
-     * if the currentFloor sis not the nextfloor, move up or down
+     * if the currentFloor sis not the next floor, move up or down
      * if not, show that the floor has been reached
      */
     private void processNextRequest() {
@@ -264,8 +262,7 @@ public class ElevatorController {
     }
 
     /**
-     * Call it before the processNextREquest > move because it will poll the request
-     * @return
+     * Call it before the processNextRRequest > move because it will poll the request
      */
     public boolean isFloorReached() {
         return this.currentFloor == this.currentQueue.peek();
@@ -273,16 +270,16 @@ public class ElevatorController {
 
     /**
      * Handle the movement of the elevator
-     *
+     * <p>
      * Check for the IDLE mode. If true, do nothing
-     *
+     * <p>
      * If not idle mode, move to up or down
      * For each movement, check if required changing the direction and process the request after
      */
     public void move() {
 
         /**
-         * Do not move if has to wait user inpt
+         * Do not move if it has to wait user input
          */
         if (this.hasToWaitUserInput()) {
             this.console("WAITING USER TO ENTER THE FLOOR");
@@ -351,7 +348,7 @@ public class ElevatorController {
      * Change the direction of the elevator if there is no request to process in the same direction
      */
     private void changeDirectionIfRequired() {
-        // Check if ther is no requiest to process
+        // Check if there is no request to process
         if (!isIDLEMode() && this.currentQueue.peek() == null) {
             if (this.elevatorDirection == ElevatorDirection.UP) this.changeDirectionToDown();
             else this.changeDirectionToUp();

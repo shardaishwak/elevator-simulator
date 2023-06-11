@@ -2,7 +2,7 @@ package com.example.learningjavafx;
 
 /**
  * A static class for instantiating a new instance of a building
- *
+ * <p>
  * We define here the total number floors and elevators
  */
 public class RunnableBuilding {
@@ -13,7 +13,7 @@ public class RunnableBuilding {
      * The building will then initialize all the instanced
      * for elevators, floors, scheduler and other controllers
      * to make the elevator work.
-     *
+     * <p>
      * Doing this will allow us to be versatile and use the same component each time.
      */
     public static final Building building = new Building(floors, elevators);
