@@ -18,44 +18,35 @@ public class Updater {
     /**
      * Update the state of the elevators for each timeframe:
      * update color of the elevators
+     * <p>
+     * We need to loop each elevator to get the status. For each floor
+     * we check if the elevator is at that elevator. if the elevator is at that
+     * elevator, we will change the color of the elevator state BOX (central ones)
+     * to black. The default color is white.
+     * <p>
+     * If the elevator is locked, the colors will be changed to red.
+     * <p>
+     * On each change, we need to check if we should move the elevator or not.
+     * An elevator must not move if there is an internal request to process.
+     * In this case, we wait until the user inputs the internal floor value and then move the elevator
+     * in the next direction.
      */
     public void updateElevatorsState() {
-        // Loop each elevators
         for (int j = 0; j < RunnableBuilding.elevators; j++) {
-            // Get the elevator
             ElevatorController elevator = RunnableBuilding.building.elevators.get(j);
-            // Get the current floor elevator is at.
             int currentFloor = elevator.getCurrentFloor();
-            // Loop each floor of the elevator
+
             for (int i = 0; i < RunnableBuilding.floors; i++) {
-                // Get the square representing the position of the elevator
                 Rectangle floorTime = (Rectangle) RunnableApplication.scene.lookup("#e"+j+i);
-                // If the elevator has reached the destination floor (currentFloor)
-                // then we will show a filled color.
                 if (i == currentFloor && !elevator.isLocked()) {
                     floorTime.setFill(Color.rgb(0,0,0));
-                } /*else if (elevator.isGroundLock()) {
-                    floorTime.setFill(Color.rgb(155,0,0));
-                } else if (elevator.isFireLock()) {
-                    floorTime.setFill(Color.rgb(255,0,0));
-                } */
-                // If the elevator is locked, all the floor squares are red
-                else if (elevator.isLocked()) {
+                } else if (elevator.isLocked()) {
                     floorTime.setFill(Color.rgb (105,0,0));
-                }
-                // If not, the default color is white.
-                else {
+                } else {
                     floorTime.setFill(Color.rgb(255,255,255));
                 }
             }
-
-            // If the elevator has to wait for the user input, show the internal control input
             if (elevator.hasToWaitUserInput()) {
-                //System.out.println("Show the user the options for floors keypad");
-                // we will have an input field
-                // we will show the input field
-                // on enter: call internalRequest from the elevator
-
                 TextField internalInput = (TextField) RunnableApplication.scene.lookup("#internal"+j);
                 internalInput.setDisable(false);
             }
@@ -64,40 +55,41 @@ public class Updater {
 
     /**
      * Show the list of all the items in the queue for status
+     * To do this, we need to map each elevator and retrieve the up, down and current
+     * queues. These dequeues are displayed in the state[index] label.
      */
     public void updateElevatorQueueStatus() {
-        // Loop each elevator
         for (int i = 0; i < RunnableBuilding.elevators; i++) {
-            // Get the state field for the elevator.
             Label label = (Label) RunnableApplication.scene.lookup("#state"+i);
-            // Get the current controller to get the queues
             ElevatorController controller = RunnableBuilding.building.elevators.get(i);
-            // get all the queues and show them
-            label.setText(controller.getCurrentQueue().toString()+"\n"+controller.getUpQueue()+"\n"+controller.getDownQueue());
+            label.setText(
+                    controller.getCurrentQueue().toString()+
+                    "\n"+controller.getUpQueue()+
+                    "\n"+controller.getDownQueue()
+            );
         }
     }
 
     /**
      * These are the small tiny tiles near the up button to show which elevator has been
      * called and where is the next destination of it.
+     * <p>
+     * To do this, we need to loop each floor. On each floor, we loop the elevators
+     * If any of the elevator will reach a particular floor i, we change the colors of the
+     * indicator with id called[index] to green. WE must break from the loop because if any
+     * of the other elevators is not at that floor, the state will be overridden.
+     *
      */
     public void updateCalledSigns() {
-        // loop each floor
         for (int i = 0; i < RunnableBuilding.floors; i++) {
-            // Get the colored tile
             Rectangle calledContainer = (Rectangle) RunnableApplication.scene.lookup("#called"+i);
-            // Loop each elevator
             for (int j = 0; j < RunnableBuilding.elevators; j++) {
-                // Get the controller of the elevator
                 ElevatorController controller = RunnableBuilding.building.elevators.get(j);
 
-                // If the floor is inside the queue, show the color green meaning that the
-                // elevator is going there.
                 if (controller.getUpQueue().contains(i) || controller.getDownQueue().contains(i)) {
                     calledContainer.setFill(Color.rgb(0, 255, 0));
                     break;
                 } else {
-                    // Default is white for not called floor.
                     calledContainer.setFill(Color.rgb(255, 255, 255));
                 }
             }

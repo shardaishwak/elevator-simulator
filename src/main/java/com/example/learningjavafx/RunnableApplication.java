@@ -33,32 +33,29 @@ public class RunnableApplication extends javafx.application.Application {
 
     /**
      * Entry point for initial setup
+     *
+     * We need to load the fxml file and set up the screen with intial width and height
+     * We need to initialize the initial setup of the handlers and updates and show the scene
+     * Afterwards, we run the initial elevator setup with default configurations
+     *
+     * In the start method, we need to initialize a timeframe for each second to render the state
+     * of the system.
      */
     @Override
     public void start(Stage stage) throws IOException {
-        // Get the FXML file to render inside the scene.
         FXMLLoader fxmlLoader = new FXMLLoader(RunnableApplication.class.getResource("elevator.fxml"));
-        // Set up the internal frame
         Scene internalScene = new Scene(fxmlLoader.load(), 650, 600);
 
-        // Adding the value to the scene
         scene = internalScene;
         stage.setTitle("Elevator Simulator!");
         stage.setScene(internalScene);
 
-        // Creating an instance of the Handler class
         this.handler = new Handler();
-        // Creating an instance of the Updater class
         this.updater = new Updater();
 
-        // Showing each component
         stage.show();
-        // Rendering initial setup: handlers and initial update the elevator
         this.setup();
 
-        // Create a new instance of the Timeline animation
-        // The timeline will animate each second and will update the
-        // view by calling the update method.
         final Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.seconds(1),
@@ -74,7 +71,6 @@ public class RunnableApplication extends javafx.application.Application {
      */
     public static void handleClearUpdateSystem() {
         Label container = (Label) scene.lookup("#systemupdate");
-        // if the user clicks on the message, clear the message.
         container.setOnMouseClicked(mouseEvent -> container.setText(""));
     }
 
@@ -88,53 +84,39 @@ public class RunnableApplication extends javafx.application.Application {
 
     /**
      * the method will be called inside the timeframe to update the view
+     *
+     * The update will update the queue state, the elevator position
+     * and the call signals
      */
     private void update() {
-        // NOTE: call is floor reached before calling move
-        // Elevator 1
-        // Update the queue status
         this.updater.updateElevatorQueueStatus();
-        // Update the elevator color floor status
         this.updater.updateElevatorsState();
-        // Update the called tiles color.
         this.updater.updateCalledSigns();
 
-        // Make the elevator move to the next destination.
         RunnableBuilding.building.scheduler.run();
     }
 
     /**
      * Initial setup before rendering everything
+     *
+     * The method simply calls the methods from the handler.
      */
     private void setup() {
-        // All the features in the elevator.
-        // Add the internal floor input events for each elevator
         this.handler.handleInternalFloorInput(0);
         this.handler.handleInternalFloorInput(1);
         this.handler.handleInternalFloorInput(2);
-        // Add the down button events
         this.handler.handleDownCalls();
-        // Add the up calls event
         this.handler.handleUpCalls();
-        // Add the lock triggering events
         this.handler.handleLock();
         this.handler.handleGroundLock();
         this.handler.handleFireLock();
-        // Handle the access to the panel
         this.handler.handleAccessFiremanPanel();
-        // Handle the logout from the panel
         this.handler.handleExitFiremanPanel();
 
-        // Set the elevator to the initial update
         this.update();
-
-        // Clear all the initial logs from the system.
         handleClearUpdateSystem();
-
-        // Initial position of the elevators
         RunnableBuilding.building.scheduler.sendElevatorsToOptimalPosition();
         setUpdateSystem("Sending elevators to optimal position");
-
     }
 
     public static void main(String[] args) {

@@ -106,78 +106,79 @@ public class Scheduler {
         this.fireLocked = false;
     }
 
+    /**
+     * Get the request from the user and process it
+     * is does not process a request if the elevators are locked.
+     * <p>
+     * Then it finds the most optimal elevator and adds the request in the queue
+     * in the most optimal one found.
+     *
+     */
     public void acceptRequestAndProcess(ElevatorDirection requestElevatorDirection, int requestFloor) {
-        // If emergency lock: no request
         if (this.areAllElevatorsLocked()) {
             Console.log("SCHEDULER", "ERROR: CALLED PROCESS BUT ELEVATORS ARE LOCKED");
             return;
         }
+
         ElevatorController optimalElevator = findOptimalElevator(requestElevatorDirection, requestFloor);
-        // This request is to go and reach the user. After that, there will be another request inside the same
-        // elevator to go on the floor the user wants.
         optimalElevator.externalRequest(requestFloor);
     }
 
     /**
      * Find the most optimal elevator given the constraint of requestDirection and floor
+     * <p>
+     * We need to first filter all the elevators that are not unlocked because
+     * it does not make sense to process a request in an elevator that will not move.
+     * <p>
+     * Then, we need to prioritize the elevator of class A or IDLE
+     * Then the class B, C and lastly D
+     * <p>
+     * As base case, we will process the last elevator
+     * <p>
+     * For each elevator found, we need to find the nearest one base of the farthest and nearest case
+     * applying in different cases.
      */
     private ElevatorController findOptimalElevator(ElevatorDirection requestElevatorDirection, int requestFloor) {
-        // WE would not consider the locked the elevators
         ArrayList<ElevatorController> unlockedElevators = new ArrayList<>();
         for (ElevatorController controller : this.elevatorControllers) {
             if (!controller.isLocked()) unlockedElevators.add(controller);
         }
-        // Class A
+
         ArrayList<ElevatorController> classAElevators = findElevatorInClassA(unlockedElevators, requestElevatorDirection, requestFloor);
         ArrayList<ElevatorController> idleElevators = findElevatorInIDLEMode(unlockedElevators);
-        // Both the class A and IDLE are the efficient one. Find the closest of these two.
         classAElevators.addAll(idleElevators);
         if (classAElevators.size() > 0) {
             Console.log("SCHEDULER", "CLASS A OR IDLE");
-            // Find the most optimal out of it. The closest one
-            // find the closes' elevator.
             return this.findClosestElevator(classAElevators, requestFloor);
         }
 
-        // Class B
         ArrayList<ElevatorController> classBElevators = findElevatorInClassB(unlockedElevators, requestElevatorDirection, requestFloor);
         if (classBElevators.size() > 0) {
             Console.log("SCHEDULER", "CLASS B");
-            // Find the most optimal out of it. The closest one
-            // It will make the U turn. The distant it is, the nearest it will be later.
             return this.findFarthestElevator(classBElevators, requestFloor);
         }
 
-        // Class C
         ArrayList<ElevatorController> classCElevators = findElevatorInClassC(unlockedElevators, requestElevatorDirection, requestFloor);
         if (classCElevators.size() > 0) {
             Console.log("SCHEDULER", "CLASS C");
-            // Find the most optimal out of it. The closest one
-            // WE will find the closest on to the elevator because after the single turn, it will be closer
-            // The floor than the other elevators.
             return this.findClosestElevator(classCElevators, requestFloor);
         }
 
-        // Class D
         ArrayList<ElevatorController> classDElevators = findElevatorInClassD(unlockedElevators, requestElevatorDirection, requestFloor);
         if (classDElevators.size() > 0) {
             Console.log("SCHEDULER", "CLASS D");
-            // Find the most optimal out of it. The closest one
 
-            // The most efficient one is the one that has to do the least double turn around.
-            // The least means that the elevator first is the farthest and then the least after.
-            // Therefore, a priori, we have to find the farthest one in the list.
             return this.findFarthestElevator(classDElevators, requestFloor);
         }
 
         Console.log("SCHEDULER", "GENERAL");
-        // If none matched, return any.
         return unlockedElevators.get(0);
-
     }
 
     /**
      * Finding the Most optimal elevator for class A
+     * condition up: The elevator and request are UP and the elevator is BELOW the request floor.
+     * condition down: The elevator and request are DOWN and the elevator is ABOVE the request floor.
      *
      * @return ArrayList<ElevatorController>: list of all the elevators
      */
@@ -185,12 +186,9 @@ public class Scheduler {
         ArrayList<ElevatorController> optimalControllers = new ArrayList<>();
         for (ElevatorController elevator : elevatorControllers) {
             if (elevator.isIDLEMode()) continue;
-            // The elevator and request are UP and the elevator is BELOW the request floor.
             boolean conditionUp = elevator.getDirection() == ElevatorDirection.UP && requestElevatorDirection == ElevatorDirection.UP && elevator.getCurrentFloor() <= requestFloor;
-            // The elevator and request are DOWN and the elevator is ABOVE the request floor.
             boolean conditionDown = elevator.getDirection() == ElevatorDirection.DOWN && requestElevatorDirection == ElevatorDirection.DOWN && elevator.getCurrentFloor() >= requestFloor;
 
-            // If any of these two conditions are met, the elevator is found
             if (conditionUp || conditionDown) optimalControllers.add(elevator);
         }
         return optimalControllers;
@@ -198,6 +196,8 @@ public class Scheduler {
 
     /**
      * Finding the Most optimal elevator for class B
+     * Up condition: The elevator is going DOWN and request is to go UP, but the elevator is BELOW the request: it will reach bottom and then go up.
+     * Down condition: The elevator is going UP and request is to go DOWN, but the elevator is ABOVE the request: it will reach up and then go up.
      *
      * @return ArrayList<ElevatorController>: list of all the elevators
      */
@@ -205,19 +205,20 @@ public class Scheduler {
         ArrayList<ElevatorController> optimalControllers = new ArrayList<>();
         for (ElevatorController elevator : elevatorControllers) {
             if (elevator.isIDLEMode()) continue;
-            // The elevator is going DOWN and request is to go UP, but the elevator is BELOW the request: it will reach bottom and then go up.
             boolean conditionUp = elevator.getDirection() == ElevatorDirection.DOWN && requestElevatorDirection == ElevatorDirection.UP && elevator.getCurrentFloor() <= requestFloor;
-            // The elevator is going UP and request is to go DOWN, but the elevator is ABOVE the request: it will reach up and then go up.
             boolean conditionDown = elevator.getDirection() == ElevatorDirection.UP && requestElevatorDirection == ElevatorDirection.DOWN && elevator.getCurrentFloor() >= requestFloor;
 
-            // If any of these two conditions are met, the elevator is found
             if (conditionUp || conditionDown) optimalControllers.add(elevator);
-
         }
         return optimalControllers;
     }
+
     /**
      * Finding the Most optimal elevator for class C
+     * Up condition: As same as class B, but in this case, the elevator will pass the floor,
+     * go up and then turn back and stop at the floor.
+     * Down condition: As same as class B, but in this case, the elevator will pass the floor,
+     * go down and then turn back and stop at the floor.
      *
      * @return ArrayList<ElevatorController>: list of all the elevators
      */
@@ -225,21 +226,24 @@ public class Scheduler {
         ArrayList<ElevatorController> optimalControllers = new ArrayList<>();
         for (ElevatorController elevator : elevatorControllers) {
             if (elevator.isIDLEMode()) continue;
-            // As same as class B, but in this case, the elevator will pass the floor, go up and then turn back and stop at the floor.
             boolean conditionUp = elevator.getDirection() == ElevatorDirection.UP && requestElevatorDirection == ElevatorDirection.DOWN && elevator.getCurrentFloor() <= requestFloor;
-            // As same as class B, but in this case, the elevator will pass the floor, go down and then turn back and stop at the floor.
             boolean conditionDown = elevator.getDirection() == ElevatorDirection.DOWN && requestElevatorDirection == ElevatorDirection.UP && elevator.getCurrentFloor() >= requestFloor;
 
-
-            // If any of these two conditions are met, the elevator is found
             if (conditionUp || conditionDown) optimalControllers.add(elevator);
-
         }
         return optimalControllers;
     }
 
     /**
      * Finding the Most optimal elevator for class C
+     * <p>
+     * The condition up: the elevator has passed the floor.
+     * It will go up, change the direction and go all to down.
+     * Then, it will up and take the request.
+     * <p>
+     * Condition down: The elevator has passed the floor.
+     * It will go down, change the direction and go all the way up.
+     * Then, it will turn again and go down to take the request.
      *
      * @return ArrayList<ElevatorController>: list of all the elevators
      */
@@ -247,15 +251,10 @@ public class Scheduler {
         ArrayList<ElevatorController> optimalControllers = new ArrayList<>();
         for (ElevatorController elevator : elevatorControllers) {
             if (elevator.isIDLEMode()) continue;
-            // the elevator has passed the floor. It will go up, change the direction and go all to down. Then, it will up and take the request.
             boolean conditionUp = elevator.getDirection() == ElevatorDirection.UP && requestElevatorDirection == ElevatorDirection.UP && elevator.getCurrentFloor() >= requestFloor;
-            // The elevator has passed the floor. It will go down, change the direction and go all the way up. Then, it will turn again and go down to take the request.
             boolean conditionDown = elevator.getDirection() == ElevatorDirection.DOWN && requestElevatorDirection == ElevatorDirection.DOWN && elevator.getCurrentFloor() <= requestFloor;
 
-
-            // If any of these two conditions are met, the elevator is found
             if (conditionUp || conditionDown) optimalControllers.add(elevator);
-
         }
         return optimalControllers;
     }
@@ -283,7 +282,6 @@ public class Scheduler {
      * FOr: A
      */
     private ElevatorController findClosestElevator(ArrayList<ElevatorController> controllers, int requestFloor) {
-        // just get the nearest elevator
         int min = Math.abs(requestFloor-controllers.get(0).getCurrentFloor());
         int minIndex = 0;
         for (int i = 0; i < controllers.size(); i++) {
@@ -313,7 +311,6 @@ public class Scheduler {
         int max = Math.abs(requestFloor-controllers.get(0).getCurrentFloor());
         int maxIndex = 0;
         for (int i = 0; i < controllers.size(); i++) {
-
             if (Math.abs(requestFloor+controllers.get(i).getCurrentFloor()) > max) {
                 max = Math.abs(requestFloor-controllers.get(i).getCurrentFloor());
                 maxIndex = i;

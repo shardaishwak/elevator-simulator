@@ -115,34 +115,20 @@ public class ElevatorController {
      * Constructor with parameter
      */
     public ElevatorController(int initialFloor) {
-        /**
-         * Initialize a random ID
-         */
         this.ID = UUID.randomUUID();
-        /**
-         * Initialize the priority queue will poll to min value
-         */
+
         this.upQueue = new PriorityQueue<>();
-        /**
-         * Initialize the priority queue with reverseOrder for poll to target the max value
-         */
+
         this.downQueue = new PriorityQueue<>(Collections.reverseOrder());
-        /**
-         * All the elevators will begin from the
-         */
+
         this.currentFloor = initialFloor;
-        /**
-         * The direction of the elevator is based on the initial floor
-         * <p>
-         * If the elevator is between the floor (4,8]: down direction
-         * if the elevator is between the floor [0,4]: up direction
-         */
+
         this.currentQueue =  initialFloor > 4 && initialFloor <= 8 ? this.downQueue : this.upQueue;
-        /**
-         * Initially in IDLE mode as there is no request
-         */
+
         this.elevatorDirection = ElevatorDirection.IDLE;
+
         this.locked = false;
+
         this.userInputRequest = new HashSet<>();
 
         this.door = new Door();
@@ -153,7 +139,6 @@ public class ElevatorController {
      * Processing the request when the user clicks from the inside of the elevator
      */
     public void internalRequest(int requestFloor) {
-        // remove the current floor from the
         this.userInputRequest.remove(this.currentFloor);
         this.addRequest(requestFloor);
     }
@@ -175,48 +160,49 @@ public class ElevatorController {
     /**
      * Process the internal request and external request.
      * In all cases, the elevator needs to stop.
+     *
+     * // CASE: elevator is in IDLE mode: we can go in any direction
+*      // NOTE: We must ensure using isIDLEMode that there is no request.
+*      // Only in that case we must
+     *
+     *  there are cases in which elevator must not process request:
+     *  - invalid floor
+     *  - input already in queue.
+     *
+     *  After reaching the floor, elevator enters the IDLE mode.
+     *  After idle, we can decide in which queue to add the request.
+     *
+     *  If the request floor is in the direction opposite, the queue will be opposite
+     *  If not the same queue will be inserted in the list.
      */
     public void addRequest(int requestFloor) {
         if (requestFloor > 7 || requestFloor < 0) {
             this.console("ERROR: INVALID INPUT. EXPECTED RANGE FOR FLOOR [0,8]");
             return;
         }
-        // CASE: elevator is in IDLE mode: we can go in any direction
-        // NOTE: We must ensure using isIDLEMode that there is no request.
-        // Only in that case we must
 
-        // the number is already in  the queue: do nothing
         if (this.upQueue.contains(requestFloor) || this.downQueue.contains(requestFloor)) return;
 
-        // BY NOW: upQueue and downQueue are EMPTY
-        
-        // The initial condition means that the elevator is doing nothing by now. 
-        // We are processing the same request.
         if (this.currentFloor == requestFloor) {
-            // What happens if the user clicks the same floor button?
-            // make them wait and enter the door
             this.changeDirectionToIDLE();
-            // TODO: request insert input again
-        } else if (this.elevatorDirection == ElevatorDirection.IDLE) {
-            // The user has to go DOWN
+        }
+        else if (this.elevatorDirection == ElevatorDirection.IDLE) {
             if (requestFloor < this.currentFloor) {
                 this.downQueue.add(requestFloor);
                 this.changeDirectionToDown();
             } else {
-                // The passenger wants to go to the upper floor
                 this.upQueue.add(requestFloor);
                 this.changeDirectionToUp();
             }
-            
-        } else if (this.elevatorDirection == ElevatorDirection.UP) {
-            // The elevator is going UP and the request in the upper direction that where the elevator is right now
-            // The elevator can go up
+        }
+        else if (this.elevatorDirection == ElevatorDirection.UP) {
             if (currentFloor < requestFloor) {
                 this.upQueue.add(requestFloor);
             } else {
                 this.downQueue.add(requestFloor);
             }
-        } else {
+        }
+        else {
             if (currentFloor < requestFloor) {
                 this.upQueue.add(requestFloor);
             } else {
@@ -225,7 +211,6 @@ public class ElevatorController {
         }
         this.console("UP QUEUE: "+this.upQueue);
         this.console("DOWN QUEUE: "+this.downQueue);
-        //this.getStatus();
     }
 
     /**
@@ -236,29 +221,18 @@ public class ElevatorController {
      * if not, show that the floor has been reached
      */
     private void processNextRequest() {
-
         int nextFloor = this.currentQueue.peek();
 
         if (this.currentFloor == nextFloor) {
             this.currentQueue.poll();
-            // There are chances that the requests to one direction have finished but there is the other direction to process
-
             this.console("FLOOR: REACHED ("+this.currentFloor+")");
-
-            // TODO: Initialize opening procedure
             return;
         }
-        // Handle the direction of the elevator
         if (this.elevatorDirection == ElevatorDirection.UP) {
-
             this.setElevatorFloor(this.currentFloor+1);
-
         } else if (this.elevatorDirection == ElevatorDirection.DOWN) {
             this.setElevatorFloor(this.currentFloor-1);
         }
-
-
-
     }
 
     /**
@@ -275,37 +249,30 @@ public class ElevatorController {
      * <p>
      * If not idle mode, move to up or down
      * For each movement, check if required changing the direction and process the request after
+     *
+     * There are cases in which elevator must not move:
+     * - wait for user input
+     * - locked
+     * - idle mode
      */
     public void move() {
-
-        /**
-         * Do not move if it has to wait user input
-         */
         if (this.hasToWaitUserInput()) {
             this.console("WAITING USER TO ENTER THE FLOOR");
             return;
         }
-
-        /**
-         * Do not move if elevator is locked.
-         */
         if (this.locked) {
             this.console("ERROR: CALLED MOVE BUT LOCKED ELEVATOR - NO REQUEST CAN BE PROCESSED");
             return;
         }
-        // The elevator has no request. Just stay in the idle mode
         if (isIDLEMode()) {
-            //System.out.println("Idle mode");
             this.changeDirectionToIDLE();
-        } else {
-            // There is a request to process because the elevator is not in the idle mode
-            // if we have to change the direction, do It
+        }
+        else {
             this.changeDirectionIfRequired();
             this.processNextRequest();
             this.console("FLOOR: " + this.currentFloor);
 
         }
-
     }
 
     /**
@@ -348,7 +315,6 @@ public class ElevatorController {
      * Change the direction of the elevator if there is no request to process in the same direction
      */
     private void changeDirectionIfRequired() {
-        // Check if there is no request to process
         if (!isIDLEMode() && this.currentQueue.peek() == null) {
             if (this.elevatorDirection == ElevatorDirection.UP) this.changeDirectionToDown();
             else this.changeDirectionToUp();
@@ -383,7 +349,6 @@ public class ElevatorController {
         {
             System.out.println("\b");
         }
-        // print request with cross
         for (int i = 0; i <= 8; i++) {
             System.out.print(" "+i+"  ");
         }
@@ -427,10 +392,6 @@ public class ElevatorController {
     public Door getDoor() {return this.door;}
 
 
-
-
-
-
     /**
      * EMERGENCY FUNCTIONS
      */
@@ -445,7 +406,6 @@ public class ElevatorController {
      * Lock the elevator and remove all the calls
      */
     public void lock() {
-        // Lock elevator: will not remove
         this.locked = true;
         this.clearAllRequests();
         this.console("LOCK: ON");
@@ -464,10 +424,7 @@ public class ElevatorController {
      */
     public void enableFireLock() {
         this.clearAllRequests();
-
-        // Until it has not reached the floor
         this.setElevatorFloor(7);
-        // Lock the elevator
         this.lock();
         this.fireLock = true;
         this.console("FIRE MOVE: ON");
@@ -488,10 +445,7 @@ public class ElevatorController {
      */
     public void enableGroundLock() {
         this.clearAllRequests();
-        //this.addRequest(0);
-
         this.setElevatorFloor(0);
-
         this.lock();
         this.groundLock = true;
         this.console("GROUND MOVE: ON");
